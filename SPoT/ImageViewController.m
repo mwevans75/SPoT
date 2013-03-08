@@ -37,6 +37,7 @@
 
 - (void)setImageURL:(NSURL *)imageURL
 {
+    NSLog(@"Setting URL");
     _imageURL = imageURL;
     [self resetImage];
 }
@@ -52,6 +53,7 @@
 
 - (void)resetImage
 {
+    NSLog(@"Reseting Image");
     if (self.scrollView) {
         self.scrollView.contentSize = CGSizeZero;
         self.imageView.image = nil;

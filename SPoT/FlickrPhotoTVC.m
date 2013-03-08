@@ -10,7 +10,7 @@
 #import "FlickrFetcher.h"
 #import "FlickrPhotoRecents.h"
 
-@interface FlickrPhotoTVC ()
+@interface FlickrPhotoTVC () <UISplitViewControllerDelegate>
 
 @end
 
@@ -29,6 +29,7 @@
         if (indexPath) {
             if ([segue.identifier isEqualToString:@"Show Image"]) {
                 if ([segue.destinationViewController respondsToSelector:@selector(setImageURL:)]) {
+                    NSLog(@"Showing Image");
                     NSURL *url = [FlickrFetcher urlForPhoto:self.photos[indexPath.row] format:FlickrPhotoFormatLarge];
                     [segue.destinationViewController performSelector:@selector(setImageURL:) withObject:url];
                     [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]];
@@ -74,6 +75,20 @@
 - (void) viewDidLoad
 {
     self.storeRecent = YES;
+}
+
+#pragma mark - UISplitViewControllerDelegate
+
+- (void)awakeFromNib
+{
+    self.splitViewController.delegate = self;
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc
+   shouldHideViewController:(UIViewController *)vc
+              inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
 }
 
 @end
