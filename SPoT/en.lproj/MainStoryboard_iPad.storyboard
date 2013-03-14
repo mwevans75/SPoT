@@ -13,19 +13,30 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yQI-7B-7nx"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wco-y8-ypp">
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="hLD-Pb-oex"/>
+                                    <barButtonItem title="Item" style="plain" id="pLS-OC-LDu"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="TMs-dl-Tyd"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="yQI-7B-7nx" firstAttribute="top" secondItem="aDv-5B-P8D" secondAttribute="top" type="default" id="A8b-ib-CGr"/>
-                            <constraint firstItem="yQI-7B-7nx" firstAttribute="bottom" secondItem="aDv-5B-P8D" secondAttribute="bottom" type="default" id="QGN-fx-WuT"/>
-                            <constraint firstItem="yQI-7B-7nx" firstAttribute="trailing" secondItem="aDv-5B-P8D" secondAttribute="trailing" type="default" id="fqD-iC-wiZ"/>
-                            <constraint firstItem="yQI-7B-7nx" firstAttribute="leading" secondItem="aDv-5B-P8D" secondAttribute="leading" type="default" id="ji2-Gm-FpO"/>
+                            <constraint firstItem="yQI-7B-7nx" firstAttribute="trailing" secondItem="aDv-5B-P8D" secondAttribute="trailing" type="default" id="7qI-DJ-C8B"/>
+                            <constraint firstItem="wco-y8-ypp" firstAttribute="leading" secondItem="aDv-5B-P8D" secondAttribute="leading" type="default" id="AnH-K0-O8L"/>
+                            <constraint firstItem="yQI-7B-7nx" firstAttribute="leading" secondItem="aDv-5B-P8D" secondAttribute="leading" type="default" id="DUN-ut-FGF"/>
+                            <constraint firstAttribute="bottom" secondItem="yQI-7B-7nx" secondAttribute="bottom" type="user" id="M21-zz-FE4"/>
+                            <constraint firstItem="wco-y8-ypp" firstAttribute="trailing" secondItem="aDv-5B-P8D" secondAttribute="trailing" type="default" id="dyQ-21-WSl"/>
+                            <constraint firstItem="yQI-7B-7nx" firstAttribute="top" secondItem="wco-y8-ypp" secondAttribute="bottom" type="default" id="svh-LD-p6N"/>
+                            <constraint firstItem="wco-y8-ypp" firstAttribute="top" secondItem="aDv-5B-P8D" secondAttribute="top" type="default" id="uHK-xJ-5Eo"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="dzT-Il-iBO"/>
                     <connections>
                         <outlet property="scrollView" destination="yQI-7B-7nx" id="T2i-Ei-lmB"/>
+                        <outlet property="titleBarButtonItem" destination="pLS-OC-LDu" id="pal-cY-sRh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gVn-8c-JdY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -81,7 +92,7 @@
         <scene sceneID="m9m-Mc-MNv">
             <objects>
                 <tabBarController definesPresentationContext="YES" id="hMo-Rf-dd9" sceneMemberID="viewController">
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="9cg-wg-dGv">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -150,11 +161,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Flickr Photo" textLabel="SpR-m3-GD4" detailTextLabel="Kd6-gs-2wU" style="IBUITableViewCellStyleSubtitle" id="SHm-Vo-Jw5">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Flickr Photo" textLabel="SpR-m3-GD4" detailTextLabel="Kd6-gs-2wU" style="IBUITableViewCellStyleSubtitle" id="SHm-Vo-Jw5">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpR-m3-GD4">
@@ -176,7 +187,13 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Recents" id="jLL-bP-dSw"/>
+                    <navigationItem key="navigationItem" title="Recents" id="jLL-bP-dSw">
+                        <barButtonItem key="rightBarButtonItem" title="Clear" id="PyX-jV-qEQ">
+                            <connections>
+                                <action selector="clearRecents:" destination="NpI-1W-QkF" id="POo-d7-dkC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pDS-br-ULD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -201,7 +218,6 @@
         <!--Navigation Controller-->
         <scene sceneID="nF8-Xm-103">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tsA-Sg-Ov0" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="Qbx-Ke-6kE" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="featured" id="Q6v-4z-kWg"/>
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="ueM-rT-iOV">
@@ -211,6 +227,7 @@
                         <segue destination="9KA-5P-sh7" kind="relationship" relationship="rootViewController" id="OZV-Iy-84P"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tsA-Sg-Ov0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="796" y="-672"/>
         </scene>
@@ -246,6 +263,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ImageViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="titleBarButtonItem" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
         <class className="NSLayoutConstraint" superclassName="NSObject">

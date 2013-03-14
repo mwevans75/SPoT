@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *imageView;
 @property (nonatomic) BOOL userDidZoom; // Tracks if the user has manually zoomed the image
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *titleBarButtonItem;
 @end
 
 @implementation ImageViewController
@@ -27,6 +28,7 @@
     self.scrollView.maximumZoomScale = MAXIMUM_ZOOM_SCALE;
     self.scrollView.delegate = self;
     [self resetImage];
+    self.titleBarButtonItem.title = self.title;
 }
 
 // When subviews get laid out, try to autozoom.
@@ -40,6 +42,12 @@
     NSLog(@"Setting URL");
     _imageURL = imageURL;
     [self resetImage];
+}
+
+- (void)setTitle:(NSString *)title
+{
+    super.title = title;
+    self.titleBarButtonItem.title = title;
 }
 
 - (UIImageView *)imageView
