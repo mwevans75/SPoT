@@ -56,9 +56,7 @@
         NSMutableArray *keys = [[NSMutableArray alloc] init];
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
         int keyCountToDelete = [mutableRecentPhotosFromUserDefaults count] - MAX_RECENT_PHOTOS;
-        
-        NSLog(@"Recent Photos to Delete: %d", keyCountToDelete);
-        
+
         [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
         while ((key = [enumerator nextObject])) {
             
@@ -67,7 +65,6 @@
         
         NSArray *sortedKeys = [keys sortedArrayUsingSelector:@selector(compare:)];
         for (int i = 0; i<=keyCountToDelete-1; i++) {
-            NSLog(@"Deleting: %@", [sortedKeys[i] description]);
             [mutableRecentPhotosFromUserDefaults removeObjectForKey:[sortedKeys[i] description]];
         }
     }

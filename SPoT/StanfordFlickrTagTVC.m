@@ -8,6 +8,7 @@
 
 #import "StanfordFlickrTagTVC.h"
 #import "FlickrFetcher.h"
+#import "NetworkIndicatorHelper.h"
 
 @interface StanfordFlickrTagTVC ()
 
@@ -20,11 +21,30 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-    self.ignoredTags = IGNORED_TAGS;
-    self.photos = [FlickrFetcher stanfordPhotos];
-    self.tags = [self parseTags:self.photos];
     
+    self.ignoredTags = IGNORED_TAGS;
+    [self loadStanfordPhotosFromFlickr];
+	
+    [self.refreshControl addTarget:self
+                            action:@selector(loadStanfordPhotosFromFlickr)
+                  forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)loadStanfordPhotosFromFlickr
+{
+    [self.refreshControl beginRefreshing];
+    
+    dispatch_queue_t loaderQ = dispatch_queue_create("flickr stanford photo loader", NULL);
+    dispatch_async(loaderQ, ^{
+        [NetworkIndicatorHelper setNetworkActivityIndicatorVisible:YES];
+        NSArray *stanfordPhotos = [FlickrFetcher stanfordPhotos];
+        [NetworkIndicatorHelper setNetworkActivityIndicatorVisible:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.photos = stanfordPhotos;
+            self.tags = [self parseTags:self.photos];
+            [self.refreshControl endRefreshing];
+        });
+    });
 }
 
 @end

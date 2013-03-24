@@ -25,6 +25,8 @@
 		C910D2E616E706CC002FE849 /* FlickrPhotoTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C910D2E516E706CC002FE849 /* FlickrPhotoTVC.m */; };
 		C910D2E916E814E2002FE849 /* FlickrPhotoRecents.m in Sources */ = {isa = PBXBuildFile; fileRef = C910D2E816E814E2002FE849 /* FlickrPhotoRecents.m */; };
 		C910D2EC16E840E7002FE849 /* FlickrRecentPhotoTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C910D2EB16E840E7002FE849 /* FlickrRecentPhotoTVC.m */; };
+		C98E536016FAB3BD007B9442 /* NetworkIndicatorHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C98E535F16FAB3BD007B9442 /* NetworkIndicatorHelper.m */; };
+		C98E536316FE8F71007B9442 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C98E536216FE8F71007B9442 /* ImageCache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,10 @@
 		C910D2E816E814E2002FE849 /* FlickrPhotoRecents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrPhotoRecents.m; sourceTree = "<group>"; };
 		C910D2EA16E840E7002FE849 /* FlickrRecentPhotoTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrRecentPhotoTVC.h; sourceTree = "<group>"; };
 		C910D2EB16E840E7002FE849 /* FlickrRecentPhotoTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrRecentPhotoTVC.m; sourceTree = "<group>"; };
+		C98E535E16FAB3BD007B9442 /* NetworkIndicatorHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkIndicatorHelper.h; sourceTree = "<group>"; };
+		C98E535F16FAB3BD007B9442 /* NetworkIndicatorHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkIndicatorHelper.m; sourceTree = "<group>"; };
+		C98E536116FE8F70007B9442 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
+		C98E536216FE8F71007B9442 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +110,8 @@
 		C910D2B116E42A68002FE849 /* SPoT */ = {
 			isa = PBXGroup;
 			children = (
+				C910D2C316E42A69002FE849 /* MainStoryboard_iPhone.storyboard */,
+				C910D2C616E42A69002FE849 /* MainStoryboard_iPad.storyboard */,
 				C910D2DE16E6F21E002FE849 /* FlickrTagTVC.h */,
 				C910D2DF16E6F21E002FE849 /* FlickrTagTVC.m */,
 				C910D2E416E706CC002FE849 /* FlickrPhotoTVC.h */,
@@ -114,10 +122,12 @@
 				C910D2E816E814E2002FE849 /* FlickrPhotoRecents.m */,
 				C910D2E116E6F3DD002FE849 /* StanfordFlickrTagTVC.h */,
 				C910D2E216E6F3DD002FE849 /* StanfordFlickrTagTVC.m */,
-				C910D2C316E42A69002FE849 /* MainStoryboard_iPhone.storyboard */,
-				C910D2C616E42A69002FE849 /* MainStoryboard_iPad.storyboard */,
 				C910D2D616E6EED6002FE849 /* ImageViewController.h */,
 				C910D2D716E6EED6002FE849 /* ImageViewController.m */,
+				C98E536116FE8F70007B9442 /* ImageCache.h */,
+				C98E536216FE8F71007B9442 /* ImageCache.m */,
+				C98E535E16FAB3BD007B9442 /* NetworkIndicatorHelper.h */,
+				C98E535F16FAB3BD007B9442 /* NetworkIndicatorHelper.m */,
 				C910D2DD16E6EF0F002FE849 /* FlickrFetcher */,
 				C910D2B216E42A68002FE849 /* Supporting Files */,
 			);
@@ -226,6 +236,8 @@
 				C910D2E616E706CC002FE849 /* FlickrPhotoTVC.m in Sources */,
 				C910D2E916E814E2002FE849 /* FlickrPhotoRecents.m in Sources */,
 				C910D2EC16E840E7002FE849 /* FlickrRecentPhotoTVC.m in Sources */,
+				C98E536016FAB3BD007B9442 /* NetworkIndicatorHelper.m in Sources */,
+				C98E536316FE8F71007B9442 /* ImageCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,6 +370,7 @@
 				C910D2D016E42A69002FE849 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

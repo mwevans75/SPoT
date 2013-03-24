@@ -29,8 +29,10 @@
         if (indexPath) {
             if ([segue.identifier isEqualToString:@"Show Image"]) {
                 if ([segue.destinationViewController respondsToSelector:@selector(setImageURL:)]) {
-                    NSLog(@"Showing Image");
-                    NSURL *url = [FlickrFetcher urlForPhoto:self.photos[indexPath.row] format:FlickrPhotoFormatLarge];
+                    FlickrPhotoFormat flickrFormat = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? FlickrPhotoFormatOriginal : FlickrPhotoFormatLarge;
+                    
+                    [self transferSplitViewBarButtonItemToViewController:segue.destinationViewController];
+                    NSURL *url = [FlickrFetcher urlForPhoto:self.photos[indexPath.row] format:flickrFormat];
                     [segue.destinationViewController performSelector:@selector(setImageURL:) withObject:url];
                     [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]];
 
@@ -79,16 +81,63 @@
 
 #pragma mark - UISplitViewControllerDelegate
 
-- (void)awakeFromNib
+- (void) awakeFromNib
 {
     self.splitViewController.delegate = self;
 }
 
-- (BOOL)splitViewController:(UISplitViewController *)svc
-   shouldHideViewController:(UIViewController *)vc
-              inOrientation:(UIInterfaceOrientation)orientation
+// hide detail VC in portrait orientation / show it in landscape orientation
+- (BOOL) splitViewController:(UISplitViewController *)svc
+    shouldHideViewController:(UIViewController *)vc
+               inOrientation:(UIInterfaceOrientation)orientation
 {
-    return NO;
+    return UIInterfaceOrientationIsPortrait(orientation);
+}
+
+#pragma mark - Split view
+
+- (void)splitViewController:(UISplitViewController *)splitController
+     willHideViewController:(UIViewController *)viewController
+          withBarButtonItem:(UIBarButtonItem *)barButtonItem
+       forPopoverController:(UIPopoverController *)popoverController
+{
+    barButtonItem.title = @"Photos";
+    id detailViewController = [self.splitViewController.viewControllers lastObject];
+    if ([detailViewController respondsToSelector:@selector(setSplitViewBarButtonItem:)]) {
+        [detailViewController performSelector:@selector(setSplitViewBarButtonItem:) withObject:barButtonItem];
+    }
+}
+
+- (void)splitViewController:(UISplitViewController *)splitController
+     willShowViewController:(UIViewController *)viewController
+  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+    // Called when the view is shown again in the split view, invalidating the button
+    id detailViewController = [self.splitViewController.viewControllers lastObject];
+    if ([detailViewController respondsToSelector:@selector(setSplitViewBarButtonItem:)]){
+        [detailViewController performSelector:@selector(setSplitViewBarButtonItem:) withObject:nil];
+    }
+}
+
+# pragma mark - Split view: transfer button
+
+- (id)splitViewDetailWithBarButtonItem
+{
+    id detailViewController = [self.splitViewController.viewControllers lastObject];
+    if (![detailViewController respondsToSelector:@selector(setSplitViewBarButtonItem:)] ||
+        ![detailViewController respondsToSelector:@selector(splitViewBarButtonItem)]) {
+        detailViewController = nil;
+    }
+    return detailViewController;
+}
+
+- (void)transferSplitViewBarButtonItemToViewController:(id)destinationViewController
+{
+    UIBarButtonItem *splitViewBarButtonItem = [[self splitViewDetailWithBarButtonItem] performSelector:@selector(splitViewBarButtonItem)];
+    [[self splitViewDetailWithBarButtonItem] performSelector:@selector(setSplitViewBarButtonItem:) withObject:nil];
+    if (splitViewBarButtonItem) {
+        [destinationViewController performSelector:@selector(setSplitViewBarButtonItem:) withObject:splitViewBarButtonItem];
+    }
 }
 
 @end

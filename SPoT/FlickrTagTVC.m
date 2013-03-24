@@ -9,7 +9,7 @@
 #import "FlickrTagTVC.h"
 #import "FlickrFetcher.h"
 
-@interface FlickrTagTVC () <UISplitViewControllerDelegate>
+@interface FlickrTagTVC ()
 
 @end
 
@@ -122,20 +122,6 @@
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:FLICKR_PHOTO_TITLE ascending:YES];
     
     return [photoArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
-}
-
-#pragma mark - UISplitViewControllerDelegate
-
-- (void)awakeFromNib
-{
-    self.splitViewController.delegate = self;
-}
-
-- (BOOL)splitViewController:(UISplitViewController *)svc
-   shouldHideViewController:(UIViewController *)vc
-              inOrientation:(UIInterfaceOrientation)orientation
-{
-    return NO;
 }
 
 @end

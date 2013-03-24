@@ -7,12 +7,17 @@
 //
 
 #import "ImageViewController.h"
+#import "NetworkIndicatorHelper.h"
+#import "ImageCache.h"
 
 @interface ImageViewController () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *imageView;
 @property (nonatomic) BOOL userDidZoom; // Tracks if the user has manually zoomed the image
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *titleBarButtonItem;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (weak, nonatomic) UIBarButtonItem *splitViewBarButtonItem;
 @end
 
 @implementation ImageViewController
@@ -29,6 +34,7 @@
     self.scrollView.delegate = self;
     [self resetImage];
     self.titleBarButtonItem.title = self.title;
+    [self handleSplitViewBarButtonItem:self.splitViewBarButtonItem]; // necessary to set the button in the toolbar in the iPad UI
 }
 
 // When subviews get laid out, try to autozoom.
@@ -39,7 +45,6 @@
 
 - (void)setImageURL:(NSURL *)imageURL
 {
-    NSLog(@"Setting URL");
     _imageURL = imageURL;
     [self resetImage];
 }
@@ -61,21 +66,38 @@
 
 - (void)resetImage
 {
-    NSLog(@"Reseting Image");
-    if (self.scrollView) {
+    if (self.scrollView && self.imageURL) {
         self.scrollView.contentSize = CGSizeZero;
         self.imageView.image = nil;
         self.userDidZoom = NO;
+        [self.activityIndicatorView startAnimating];
         
-        NSData *imageData = [[NSData alloc] initWithContentsOfURL:self.imageURL];
-        UIImage *image = [[UIImage alloc] initWithData:imageData];
-        
-        if (image) {
-            self.scrollView.zoomScale = 1.0;
-            self.scrollView.contentSize = image.size;
-            self.imageView.image = image;
-            self.imageView.frame = CGRectMake(0,0,image.size.width, image.size.height);
-        }
+        NSURL *imageURL = self.imageURL;
+        dispatch_queue_t imageFetchQ = dispatch_queue_create("image fetcher", NULL);
+        dispatch_async(imageFetchQ, ^{
+            NSLog(@" ");
+            NSLog(@"Retreiving Image Data");
+            //NSData *imageData = [[NSData alloc] initWithContentsOfURL:self.imageURL];
+            NSData *imageData = [ImageCache imageFromURL:self.imageURL];
+            UIImage *image = [[UIImage alloc] initWithData:imageData];
+            
+            if (self.imageURL == imageURL) {
+                // Store Image in Cache
+                [ImageCache storeImage:imageData forURL:imageURL];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (image) {
+                        self.scrollView.zoomScale = 1.0;
+                        self.scrollView.contentSize = image.size;
+                        self.imageView.image = image;
+                        self.imageView.frame = CGRectMake(0,0,image.size.width, image.size.height);
+                        
+                    }
+                    [self.activityIndicatorView stopAnimating];
+                    [self autoZoom];
+
+                });
+            }
+        });
     }
 }
 
@@ -97,6 +119,29 @@
         CGFloat heightRatio = self.scrollView.bounds.size.height / self.imageView.bounds.size.height;
         self.scrollView.zoomScale = (widthRatio > heightRatio) ? widthRatio : heightRatio;
         self.userDidZoom = NO; // Setting the zoom on the previous line triggered scrollViewDidZoom, but since we know that we did the zooming we need to set the userDidZoom flag back to NO
+    }
+}
+
+// Puts the splitViewBarButton in our toolbar (and/or removes the old one).
+// Must be called when our splitViewBarButtonItem property changes
+//  (and also after our view has been loaded from the storyboard (viewDidLoad)).
+- (void)handleSplitViewBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+    NSMutableArray *toolbarItems = [self.toolbar.items mutableCopy];
+    if (_splitViewBarButtonItem) {
+        [toolbarItems removeObject:_splitViewBarButtonItem]; // if the barbutton is present remove it
+    }
+    if (barButtonItem) {
+        [toolbarItems insertObject:barButtonItem atIndex:0]; // put the barbutton on the left of our existing toolbar
+    }
+    self.toolbar.items = toolbarItems;
+    _splitViewBarButtonItem = barButtonItem;
+}
+
+- (void)setSplitViewBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+    if (barButtonItem != _splitViewBarButtonItem) {
+        [self handleSplitViewBarButtonItem:barButtonItem];
     }
 }
 
